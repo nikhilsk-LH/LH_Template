@@ -43,21 +43,65 @@ const copyToClipboard = (text) => {
   });
 };
 
+const renderTemplateCard = (item, index, categoryTitle) => {
+  return `
+    <div onclick="window.copyText(this)" 
+         data-text="${encodeURIComponent(item.text)}"
+         class="group relative bg-brand-yellow rounded-2xl p-8 shadow-md hover:shadow-xl border border-transparent hover:border-white transition-all duration-300 cursor-pointer transform hover:scale-[1.01] overflow-hidden">
+      
+      <!-- Hover Overlay Effect -->
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+      
+      <div class="relative z-10">
+        <div class="flex justify-between items-start mb-4">
+          <span class="bg-white/30 text-brand-dark text-xs font-bold px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">
+            ${categoryTitle ? categoryTitle : `Template ${index + 1}`}
+          </span>
+          <span class="text-xs text-brand-dark/70 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.052 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25V6.75a2.25 2.25 0 012.25-2.25H6.75A2.25 2.25 0 019 6.75v11.25m6-1.5h2.25" />
+            </svg>
+            Click to copy
+          </span>
+        </div>
+        <p class="text-brand-dark leading-relaxed whitespace-pre-wrap font-medium text-lg">${item.text}</p>
+      </div>
+    </div>
+  `;
+};
+
 const renderHome = () => {
   app.innerHTML = `
     <div class="container mx-auto px-4 py-12 max-w-5xl">
-      <header class="mb-12 text-center animate-fade-in-down flex flex-col items-center">
-        <!-- Heart Icon (simulated with SVG since we don't have the image asset) -->
+      <header class="mb-8 text-center animate-fade-in-down flex flex-col items-center">
+        <!-- Heart Icon -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 text-brand-yellow mb-4">
           <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
         </svg>
         
-        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-yellow mb-2 tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-yellow mb-6 tracking-tight">
           Laundryheap
         </h1>
+
+        <!-- Search Bar -->
+        <div class="w-full max-w-md relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-brand-blue">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </div>
+          <input type="text" 
+                 id="searchInput"
+                 oninput="window.handleSearch(this.value)"
+                 placeholder="Search templates..." 
+                 class="w-full pl-12 pr-4 py-4 rounded-full bg-brand-yellow text-brand-dark placeholder-brand-dark/50 font-semibold focus:outline-none focus:ring-4 focus:ring-brand-yellow/50 shadow-lg transition-all"
+                 autocomplete="off"
+          >
+        </div>
       </header>
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Category Grid -->
+      <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         ${categories.map(cat => `
           <div onclick="window.selectCategory('${cat.id}')" 
                class="group cursor-pointer rounded-2xl p-8 ${cat.color} border border-transparent ${cat.hoverBorderColor} transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl shadow-lg flex flex-col items-center justify-center text-center h-48">
@@ -70,6 +114,16 @@ const renderHome = () => {
           </div>
         `).join('')}
       </div>
+
+      <!-- Search Results (Hidden by default) -->
+      <div id="searchResults" class="hidden flex flex-col gap-6 max-w-4xl mx-auto">
+        <!-- Results will be injected here -->
+      </div>
+      
+      <div id="noResults" class="hidden text-center text-white/80 py-12">
+        <p class="text-xl font-medium">No matching templates found.</p>
+      </div>
+
     </div>
   `;
 };
@@ -97,28 +151,7 @@ const renderDetail = (categoryId) => {
 
       <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
         <div class="flex flex-col gap-6">
-          ${category.items.map((item, index) => `
-            <div onclick="window.copyText(this)" 
-                 data-text="${encodeURIComponent(item.text)}"
-                 class="group relative bg-brand-yellow rounded-2xl p-8 shadow-md hover:shadow-xl border border-transparent hover:border-white transition-all duration-300 cursor-pointer transform hover:scale-[1.01] overflow-hidden">
-              
-              <!-- Hover Overlay Effect -->
-              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              
-              <div class="relative z-10">
-                <div class="flex justify-between items-start mb-4">
-                  <span class="bg-white/30 text-brand-dark text-xs font-bold px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">Template ${index + 1}</span>
-                  <span class="text-xs text-brand-dark/70 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity font-semibold">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.052 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25V6.75a2.25 2.25 0 012.25-2.25H6.75A2.25 2.25 0 019 6.75v11.25m6-1.5h2.25" />
-                    </svg>
-                    Click to copy
-                  </span>
-                </div>
-                <p class="text-brand-dark leading-relaxed whitespace-pre-wrap font-medium text-lg">${item.text}</p>
-              </div>
-            </div>
-          `).join('')}
+          ${category.items.map((item, index) => renderTemplateCard(item, index)).join('')}
         </div>
       </div>
     </div>
@@ -126,6 +159,43 @@ const renderDetail = (categoryId) => {
 };
 
 // Global handlers
+window.handleSearch = (query) => {
+  const categoryGrid = document.getElementById('categoryGrid');
+  const searchResults = document.getElementById('searchResults');
+  const noResults = document.getElementById('noResults');
+
+  if (!query.trim()) {
+    categoryGrid.classList.remove('hidden');
+    searchResults.classList.add('hidden');
+    noResults.classList.add('hidden');
+    return;
+  }
+
+  const searchTerm = query.toLowerCase();
+  const results = [];
+
+  categories.forEach(cat => {
+    cat.items.forEach(item => {
+      if (item.text.toLowerCase().includes(searchTerm)) {
+        results.push({ ...item, categoryTitle: cat.title });
+      }
+    });
+  });
+
+  categoryGrid.classList.add('hidden');
+
+  if (results.length > 0) {
+    searchResults.innerHTML = results.map((item, index) =>
+      renderTemplateCard(item, index, item.categoryTitle)
+    ).join('');
+    searchResults.classList.remove('hidden');
+    noResults.classList.add('hidden');
+  } else {
+    searchResults.classList.add('hidden');
+    noResults.classList.remove('hidden');
+  }
+};
+
 window.selectCategory = (id) => {
   activeCategory = id;
   renderDetail(id);
