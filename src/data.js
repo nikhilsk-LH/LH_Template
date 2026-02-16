@@ -13,6 +13,15 @@ export const categories = [
             },
             {
                 text: "We always process the payment by Friday. The amount should be credited by Friday EOD. It may take till Monday in some cases due to delays caused by the banking process.\n\nFor further queries, its best to reach out to scout@laundryheap.com"
+            },
+            {
+                text: "We ensure payments are processed by Friday. The funds should be credited by Friday EOD, though in some cases, it may take until Monday due to bank-related delays.\n\nFor any additional questions, please contact scout@laundryheap.com.\n\nThank you."
+            },
+            {
+                text: "We complete payment processing by Friday each week. The amount should reach your account by the end of Friday, although banking delays may cause it to reflect on Monday in some cases.\n\nFor further assistance, please contact scout@laundryheap.com.\n\nThank you."
+            },
+            {
+                text: "We are the live team and we support the operations duirng the route. We will help you to resolve issues if there is any during the route. Anything related to payments, needs to be addressed with the fleet team. so i would suggest you to sent an email to scout@laundryheap.com and the team will help you out."
             }
         ]
     },
