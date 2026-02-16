@@ -43,10 +43,36 @@ const copyToClipboard = (text) => {
   });
 };
 
+const copyImageToClipboard = async (imagePath) => {
+  try {
+    const response = await fetch(imagePath);
+    const blob = await response.blob();
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        [blob.type]: blob
+      })
+    ]);
+    showToast('Image copied to clipboard!');
+  } catch (err) {
+    console.error('Failed to copy image:', err);
+    showToast('Failed to copy image.');
+  }
+};
+
 const renderTemplateCard = (item, index, categoryTitle) => {
+  const contentHtml = item.image
+    ? `<img src="${item.image}" 
+            alt="${item.text}" 
+            class="w-full h-auto rounded-lg mb-4 hover:opacity-90 transition-opacity"
+            />`
+    : `<p class="text-brand-dark leading-relaxed whitespace-pre-wrap font-medium text-lg">${item.text}</p>`;
+
+  const clickAction = item.image
+    ? `onclick="window.copyImage('${item.image}')"`
+    : `onclick="window.copyText(this)" data-text="${encodeURIComponent(item.text)}"`;
+
   return `
-    <div onclick="window.copyText(this)" 
-         data-text="${encodeURIComponent(item.text)}"
+    <div ${clickAction}
          class="group relative bg-brand-yellow rounded-2xl p-8 shadow-md hover:shadow-xl border border-transparent hover:border-white transition-all duration-300 cursor-pointer transform hover:scale-[1.01] overflow-hidden">
       
       <!-- Hover Overlay Effect -->
@@ -61,10 +87,11 @@ const renderTemplateCard = (item, index, categoryTitle) => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.052 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25V6.75a2.25 2.25 0 012.25-2.25H6.75A2.25 2.25 0 019 6.75v11.25m6-1.5h2.25" />
             </svg>
-            Click to copy
+            ${item.image ? 'Click to copy image' : 'Click to copy text'}
           </span>
         </div>
-        <p class="text-brand-dark leading-relaxed whitespace-pre-wrap font-medium text-lg">${item.text}</p>
+        ${contentHtml}
+        ${item.image ? `<p class="text-brand-dark font-bold mt-2">${item.text}</p>` : ''}
       </div>
     </div>
   `;
@@ -210,6 +237,10 @@ window.goBack = () => {
 window.copyText = (el) => {
   const text = decodeURIComponent(el.getAttribute('data-text'));
   copyToClipboard(text);
+};
+
+window.copyImage = (imagePath) => {
+  copyImageToClipboard(imagePath);
 };
 
 // Initial Render

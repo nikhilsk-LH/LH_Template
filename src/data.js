@@ -60,8 +60,24 @@ export const categories = [
         hoverBorderColor: 'hover:border-white',
         icon: 'BeakerIcon',
         items: [
-            { text: "Test slot message 1..." },
-            { text: "Test slot message 2..." }
+            {
+                text: "Thank you for completing your first shift with Laundryheap. We hope you had a great experience! We'd love to know if the training provided during onboarding was adequate for operating on your first shift.\nWe're attaching a link to a quick survey to understand how your training and onboarding process went.\nhttps://form.typeform.com/to/u08fJlU7\nKindly take a minute and fill out this survey at the earliest. Please note that taking this survey is a requisite before your performance on your first shift is assessed.\nHowever, the response to this survey has no relation to the outcome of your first shift's assessment.\nThank you!"
+            },
+            {
+                text: "ATZ_Clunbury - N1 6TT\nDRP_Holborn - WC1X 8TP\nGSD_Connaught - E16 2BS\nLEW_Lewisham - SE4 1UY\nLAV_Southwark Park - SE16 3RN\nOLD_Oldstreet - EC1V 9AY\nTO_tooting -SW17 8BD\nLUX_Weirroad -SW12 0NE\nEDC_Raynes Park - SW20 8BA\nODC_Teddington - TW11 8JD\nWRS_Hangerlane - W5 1DP\nCRD_CrownLane - N14 5EN\nOMC_Stanmore - HA7 4AR\n\nPlease note that this is the list of facilities that we operate\nYou can let us know which facilities work best for you, and we can get in touch with you if there are any blocks in that facility."
+            },
+            {
+                text: "Welcome to Laundryheap!",
+                image: "assets/welcome.svg"
+            },
+            {
+                text: "Slot Density Explanation",
+                image: "assets/slot_density.svg"
+            },
+            {
+                text: "Partner Driver Guidelines",
+                image: "assets/guidelines.svg"
+            }
         ]
     },
     {
