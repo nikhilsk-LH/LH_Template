@@ -47,8 +47,24 @@ export const categories = [
         hoverBorderColor: 'hover:border-white',
         icon: 'XCircleIcon',
         items: [
-            { text: "Standard cancellation message 1..." },
-            { text: "Standard cancellation message 2..." }
+            {
+                text: "Hi [Driver Name],\nWe noticed that the start has not been confirmed yet. Please confirm it as soon as possible. Otherwise, we will need to proceed with cancellation, and charges may apply as this would be considered a last-minute cancellation.\nThank you."
+            },
+            {
+                text: "Hi [Driver Name],\nWe can see that the start has not been confirmed. Please ensure this is done as soon as possible. Failing to confirm may result in cancellation, and charges could be applied due to the late notice.\nThank you for your cooperation."
+            },
+            {
+                text: "Hi [Driver Name],\nWe noticed that the start has not yet been confirmed. Please confirm it as soon as possible to avoid cancellation. If it remains unconfirmed, we will need to proceed with cancellation, and last-minute cancellation charges may apply."
+            },
+            {
+                text: "Hi [Driver Name],\nAs we have not received any response from you, we are proceeding with the cancellation of the block. Please be advised that a 100% charge will be applied as per policy.\nFor any further assistance, please contact scout@laundryheap.com.\nThank you."
+            },
+            {
+                text: "Hi [Driver Name],\nAs there has been no response, we are now proceeding with the block cancellation. Please be aware that a 100% charge will apply in this case.\nIf you require any additional information, please email scout@laundryheap.com."
+            },
+            {
+                text: "Hello [Driver Name],\nSince we did not receive a response from your end, we will proceed with cancelling the block. Kindly note that this will result in a 100% charge.\nFor any further queries, please reach out to scout@laundryheap.com.\nThank you."
+            }
         ]
     },
     {
