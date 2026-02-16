@@ -118,8 +118,36 @@ export const categories = [
         hoverBorderColor: 'hover:border-white',
         icon: 'ClipboardDocumentListIcon',
         items: [
-            { text: "Task related message 1..." },
-            { text: "Task related message 2..." }
+            {
+                text: "Please send a text message and attempt to call the customer within 5 minutes. If there is still no response, update us and fail the task."
+            },
+            {
+                text: "Kindly drop a message and try calling the customer within 5 minutes. If we do not hear back, please note it in the app and mark the task as failed."
+            },
+            {
+                text: "Drop a text and try contacting the customer again within 5 minutes. If there is still no reply, update the app accordingly and proceed after failing the task."
+            },
+            {
+                text: "[Order ID 1]\n[Order ID 2]\nFor the above orders, the customer has placed two separate orders under different services. Please ensure each order is checked and properly tagged under its respective service."
+            },
+            {
+                text: "[Order ID 1]\n[Order ID 2]\nPlease note that the customer has multiple service orders. Make sure each order is handled and tagged separately in the system."
+            },
+            {
+                text: "[Order ID 1]\n[Order ID 2]\nThe customer has selected two different services. Please confirm with the customer which service applies to each order number and tag them accordingly. Ensure the tagging is completed in front of the customer. If the customer is unavailable, please proceed as per the online instructions."
+            },
+            {
+                text: "In the next block, two orders require a swap. Pick up [Order 1] from the facility and deliver it to [Order 2]. At the same time, collect the order from [Order 2] and deliver it to [Order 1]. The route has already been updated. Please follow the updated sequence and notify us if there are any concerns."
+            },
+            {
+                text: "Please note that for the upcoming block, [Order 1] and [Order 2] need to be exchanged. Collect [Order 1] from the facility and deliver it to [Order 2], then collect from [Order 2] and deliver back to [Order 1]. The route has been adjusted accordingly. Let us know immediately if you encounter any issues."
+            },
+            {
+                text: "[Order ID]\nFor the upcoming round, please ensure the above-mentioned order is collected from the facility and delivered to the customer."
+            },
+            {
+                text: "[Order ID]\nKindly collect the specified order from the facility during your round and complete the delivery to the customer."
+            }
         ]
     }
 ];
