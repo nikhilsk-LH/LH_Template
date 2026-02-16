@@ -34,8 +34,24 @@ export const categories = [
         hoverBorderColor: 'hover:border-white',
         icon: 'TruckIcon',
         items: [
-            { text: "Standard driver start message 1..." },
-            { text: "Standard driver start message 2..." }
+            {
+                text: "Try reaching out to the customer regarding an alternate route. If you’re unable to connect, let us know. Please provide a photo of the road obstruction and fail the task accordingly."
+            },
+            {
+                text: "Please attempt to contact the customer for an alternate route. If there is no reply, notify us, upload a photo of the roadblock, and proceed with failing the task."
+            },
+            {
+                text: "Please fail the task for now. Is there any possibility that the order may have been delivered to the wrong customer? If you recall anything, kindly let us know so we can check."
+            },
+            {
+                text: "Please mark the task as failed for now. If there’s any chance the order was delivered to another customer, just let us know — we’ll review and assist accordingly."
+            },
+            {
+                text: "Please fail the task for now. Once you return to the facility, check if the order is available there and update us. If it is not found, there may be a possibility of misdelivery, and we will investigate. If you believe it could have been delivered to another customer, please share the relevant order details."
+            },
+            {
+                text: "Please mark the task as failed. After reaching the facility, check for the order and confirm with us. If it is not available, we will treat it as a potential misdelivery and investigate. If you think it may have been delivered to another customer, provide the related order information immediately."
+            }
         ]
     },
     {
