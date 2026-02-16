@@ -79,16 +79,16 @@ const renderDetail = (categoryId) => {
   if (!category) return renderHome();
 
   app.innerHTML = `
-    <div class="min-h-screen bg-gray-50 flex flex-col">
-      <div class="bg-white shadow-sm border-b sticky top-0 z-40">
+    <div class="min-h-screen bg-brand-blue flex flex-col">
+      <div class="sticky top-0 z-40 bg-brand-blue/95 backdrop-blur-sm border-b border-white/10 shadow-sm">
         <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-          <button onclick="window.goBack()" class="flex items-center text-gray-500 hover:text-gray-900 transition-colors font-medium group">
+          <button onclick="window.goBack()" class="flex items-center text-white hover:text-brand-yellow transition-colors font-medium group">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform">
               <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
             Back to Categories
           </button>
-          <h2 class="text-xl font-bold ${category.textColor} flex items-center gap-2">
+          <h2 class="text-xl font-bold text-brand-yellow flex items-center gap-2">
             ${getIcon(category.icon).replace('w-8 h-8', 'w-6 h-6')}
             ${category.title}
           </h2>
@@ -100,22 +100,22 @@ const renderDetail = (categoryId) => {
           ${category.items.map((item, index) => `
             <div onclick="window.copyText(this)" 
                  data-text="${encodeURIComponent(item.text)}"
-                 class="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg border border-gray-100 ${category.hoverBorderColor} transition-all duration-300 cursor-pointer transform hover:scale-[1.01] overflow-hidden">
+                 class="group relative bg-brand-yellow rounded-2xl p-8 shadow-md hover:shadow-xl border border-transparent hover:border-white transition-all duration-300 cursor-pointer transform hover:scale-[1.01] overflow-hidden">
               
               <!-- Hover Overlay Effect -->
-              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
               
               <div class="relative z-10">
                 <div class="flex justify-between items-start mb-4">
-                  <span class="bg-gray-100 text-gray-500 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Template ${index + 1}</span>
-                  <span class="text-xs text-gray-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span class="bg-white/30 text-brand-dark text-xs font-bold px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">Template ${index + 1}</span>
+                  <span class="text-xs text-brand-dark/70 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity font-semibold">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.052 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25V6.75a2.25 2.25 0 012.25-2.25H6.75A2.25 2.25 0 019 6.75v11.25m6-1.5h2.25" />
                     </svg>
                     Click to copy
                   </span>
                 </div>
-                <p class="text-gray-700 leading-relaxed whitespace-pre-wrap font-medium text-lg">${item.text}</p>
+                <p class="text-brand-dark leading-relaxed whitespace-pre-wrap font-medium text-lg">${item.text}</p>
               </div>
             </div>
           `).join('')}
