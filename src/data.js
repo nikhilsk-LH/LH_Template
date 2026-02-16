@@ -68,15 +68,15 @@ export const categories = [
             },
             {
                 text: "Welcome to Laundryheap!",
-                image: "assets/welcome.svg"
+                image: "assets/welcome1.jpg"
             },
             {
                 text: "Slot Density Explanation",
-                image: "assets/slot_density.svg"
+                image: "assets/Slot_density_and_payments.png"
             },
             {
                 text: "Partner Driver Guidelines",
-                image: "assets/guidelines.svg"
+                image: "assets/ver2.png"
             }
         ]
     },
