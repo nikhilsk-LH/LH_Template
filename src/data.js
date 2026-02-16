@@ -105,8 +105,21 @@ export const categories = [
         hoverBorderColor: 'hover:border-white',
         icon: 'ChatBubbleLeftRightIcon',
         items: [
-            { text: "Feedback response 1..." },
-            { text: "Feedback response 2..." }
+            {
+                text: "PD’s scheduled start time was [time] from [facility name]. However, PD arrived at [time], and the route began at [time], which resulted in a few tasks being delayed."
+            },
+            {
+                text: "The assigned start time for PD was [time] at [facility name]. PD reached at [time], and the route commenced at [time], causing delays to some tasks."
+            },
+            {
+                text: "PD’s start time was [time], but arrival at [time] led to the route beginning at [time], affecting a few tasks on the route."
+            },
+            {
+                text: "The start time for PD was [time]; however, PD arrived at [time], and the route started at [time]. To avoid service delays, we had to move some orders to other drivers."
+            },
+            {
+                text: "Although PD was scheduled to begin at [time], arrival at [time] led to the route starting at [time]. Additionally, a few tasks on PD’s route were rescheduled."
+            }
         ]
     },
     {
