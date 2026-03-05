@@ -101,25 +101,39 @@ const convertToPng = (blob) => {
   });
 };
 
-const copyImageToClipboard = async (imagePath) => {
+const copyImageToClipboard = (imagePath) => {
+  const blobPromise = fetch(imagePath)
+    .then(response => response.blob())
+    .then(async (blob) => {
+      if (blob.type === 'image/png') {
+        return blob;
+      }
+      return await convertToPng(blob);
+    });
+
   try {
-    const response = await fetch(imagePath);
-    const blob = await response.blob();
-
-    let clipboardBlob = blob;
-    if (blob.type !== 'image/png') {
-      clipboardBlob = await convertToPng(blob);
-    }
-
-    await navigator.clipboard.write([
-      new ClipboardItem({
-        ['image/png']: clipboardBlob
-      })
-    ]);
-    showToast('Image copied to clipboard!');
+    // Safari pattern: synchronous write with a Promise
+    const item = new ClipboardItem({ 'image/png': blobPromise });
+    navigator.clipboard.write([item])
+      .then(() => showToast('Image copied to clipboard!'))
+      .catch((err) => {
+        console.error('Failed to copy image:', err);
+        showToast('Failed to copy image.');
+      });
   } catch (err) {
-    console.error('Failed to copy image:', err);
-    showToast('Failed to copy image.');
+    // Fallback for browsers that don't support passing a Promise to ClipboardItem
+    blobPromise.then((blob) => {
+      const item = new ClipboardItem({ 'image/png': blob });
+      navigator.clipboard.write([item])
+        .then(() => showToast('Image copied to clipboard!'))
+        .catch((e) => {
+          console.error('Fallback failed to copy image:', e);
+          showToast('Failed to copy image.');
+        });
+    }).catch((e) => {
+      console.error('Failed to prepare image:', e);
+      showToast('Failed to copy image.');
+    });
   }
 };
 
