@@ -37,9 +37,67 @@ const showToast = (message) => {
   }, 2000);
 };
 
+const fallbackCopyTextToClipboard = (text) => {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+
+  // Avoid scrolling to bottom
+  textArea.style.top = '0';
+  textArea.style.left = '0';
+  textArea.style.position = 'fixed';
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      showToast('Copied to clipboard!');
+    } else {
+      showToast('Failed to copy text.');
+    }
+  } catch (err) {
+    console.error('Fallback: Oops, unable to copy', err);
+    showToast('Failed to copy text.');
+  }
+
+  document.body.removeChild(textArea);
+};
+
 const copyToClipboard = (text) => {
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('Copied to clipboard!');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy text: ', err);
+      fallbackCopyTextToClipboard(text);
+    });
+  } else {
+    fallbackCopyTextToClipboard(text);
+  }
+};
+
+const convertToPng = (blob) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(blob);
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((pngBlob) => {
+        URL.revokeObjectURL(url);
+        resolve(pngBlob);
+      }, 'image/png');
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Image load error'));
+    };
+    img.src = url;
   });
 };
 
@@ -47,9 +105,15 @@ const copyImageToClipboard = async (imagePath) => {
   try {
     const response = await fetch(imagePath);
     const blob = await response.blob();
+
+    let clipboardBlob = blob;
+    if (blob.type !== 'image/png') {
+      clipboardBlob = await convertToPng(blob);
+    }
+
     await navigator.clipboard.write([
       new ClipboardItem({
-        [blob.type]: blob
+        ['image/png']: clipboardBlob
       })
     ]);
     showToast('Image copied to clipboard!');
